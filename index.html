@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Markdown 我喜欢写作</title>
+    <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="codemirror/theme/ambiance.css">
+    <script src="codemirror/lib/codemirror.js"></script>
+    <script src="codemirror/lib/util/continuelist.js"></script>
+    <script src="codemirror/lib/markdown.js"></script>
+    <script src="codemirror/lib/xml.js"></script>
+		<script src="codemirror/pagedown/Markdown.Converter.js"></script>
+		<script src="codemirror/pagedown/Markdown.Sanitizer.js"></script>
+		<style type="text/css">
+			body{
+			background-image:url(bak.jpg);
+			}
+			.CodeMirror {
+				border-top: 1px solid black; border-bottom: 1px solid #cccccc;
+			}
+			#main{
+				width:900px;margin:0 auto ;
+			}
+			.sp{
+				height:5px;
+				background-color:white;
+				border-bottom:4px dashed #cccccc;
+			}
+			#preview{
+				background-color:white;
+				height:300px;
+				overflow:auto;
+				padding:5px;
+				-webkit-box-shadow:4px 4px 5px rgba(0,0,0,.6);box-shadow:4px 4px 5px rgba(0,0,0,.6);
+			}
+			#preview h1,h2,h3{
+				text-shadow: 1px 1px 1px rgba(50, 50, 50, 0.3);
+			}
+			#preview p{
+				text-indent : 2em; 
+			}
+			#preview a:link,a:visited,a:active{
+				color:#153E5E;
+			}
+			#preview a:hover{
+				color:#CE1B92;
+			}
+			#preview img{
+				margin:5px;
+				float:right;
+			}
+			</style>
+  </head>
+	<body>
+		<div id="main">
+    <h1 style="color:white;margin-top:0">markdown editor</h1>
+<form><textarea id="code" name="code">
+markdown editor
+=============
+<!--	**firefox18 chrome23 IE9测试通过**	-->
+<!--	还没想到好名字,就瞎叫markdown editor算了	-->
+<!--	如果你觉得不爽,可以试试按一下F11	-->
+markdown很cool，很简单。找了好多的markdown编辑器，比如wmd，但是功能很粗糙，无法达到我想要的效果
+于是便自己搞了一个。哈哈还不错吧。
+
+使用了CodeMirror和pagedown，
+感谢 **Marijn Haverbeke**提供**CodeMirror**如此强大的编辑器，
+感谢**PageDown**实现了预览功能。
+
+所以说，我什么都没有做。哈哈。
+
+加个图片逗一下,给图片加了些css，让图片和文字更和谐。![逗一下](dou.gif)
+
+感谢您的体验！如果有什么好的想法，您可以微博联系**[我](http://weibo.com/ganmaolaotou)**
+
+###资源:
+
+*	[CodeMirror](http://codemirror.net/)
+*   [pagedown](https://github.com/ujifgc/pagedown)
+
+markdown快速入门
+=============
+连接:[wowubuntu](http://wowubuntu.com/markdown/)
+</textarea></form>
+<div class="sp"></div>
+<div id="preview"></div>
+		</div>
+<script>
+	var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+		mode: 'markdown',
+		lineNumbers: true,
+		theme: "ambiance",
+		extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"},
+	});
+</script>
+<script type="text/javascript">
+
+	editor.on("change", updatePreview);
+	editor.on("scroll", scrollPreview);
+	//修改了白名单中图片正则,可以加入图片了
+	//convert = new Markdown.Converter().makeHtml;
+	convert = new Markdown.getSanitizingConverter().makeHtml;
+	var previewDiv = document.getElementById('preview');
+	function updatePreview() {
+		var mhtml=convert(editor.getValue())	;
+		//alert(editor.getValue());
+		previewDiv.innerHTML=mhtml;
+		
+	}
+	function scrollPreview(){
+		var percent=editor.getScrollerElement().scrollTop/editor.getScrollerElement().scrollHeight;
+		console.log(percent);
+				previewDiv.scrollTop=percent*previewDiv.scrollHeight;
+	}
+	updatePreview();	
+</script>
+			</body>
+</html>
